@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prediction Result</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(
+          to bottom right,
+          black,
+          rgb(40, 0, 70),
+          black
+        );
+        font-family: "Poppins", sans-serif;
+        color: rgb(210, 185, 255);
+        overflow-x: hidden;
+      }
+
+      /* ---- Background glow ---- */
+      .purple-blur {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .purple-blur::before {
+        content: "";
+        position: absolute;
+        left: -30%;
+        top: 25%;
+        width: 180%;
+        height: 45%;
+        background: linear-gradient(
+          to right,
+          rgba(168, 85, 247, 0.55),
+          rgba(216, 180, 254, 0.25)
+        );
+        transform: rotate(-20deg);
+        filter: blur(130px);
+        opacity: 0.55;
+      }
+
+      /* ---- Navbar ---- */
+      .navbar {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(18px);
+        display: flex;
+        gap: 25px;
+        z-index: 1000;
+      }
+
+      .navbar a {
+        color: rgb(230, 200, 255);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      /* ---- Layout ---- */
+      .container {
+        margin-top: 160px;
+        width: 100%;
+        max-width: 820px;
+        padding: 50px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(120, 0, 255, 0.35);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 0 40px rgba(120, 0, 255, 0.3);
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      h2 {
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 0 18px rgba(160, 80, 255, 0.45);
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        margin-top: 30px;
+        font-size: 1.5rem;
+        color: #e8d8ff;
+      }
+
+      p {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-bottom: 25px;
+        color: white;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid rgba(200, 160, 255, 0.25);
+        margin: 30px 0;
+      }
+
+      /* ---- LIME text explanation ---- */
+      .lime-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        overflow: hidden;
+      }
+
+      .lime-list li {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 0.95rem;
+        overflow: hidden;
+        border-bottom: 1px dashed rgba(200, 160, 255, 0.2);
+      }
+
+      /* ---- LIME visual ---- */
+      .lime-visual {
+        margin-top: 25px;
+        background: black;
+        border-radius: 14px;
+        padding: 12px;
+        overflow: hidden;
+        scrollbar-width: none;
+      }
+
+      /* ---- Button ---- */
+      .btn {
+        display: inline-block;
+        margin-top: 40px;
+        background: white;
+        color: black;
+        padding: 14px 40px;
+        font-size: 1.05rem;
+        border-radius: 40px;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.45);
+        transition: transform 0.3s;
+      }
+
+      .btn:hover {
+        transform: scale(1.07);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="purple-blur"></div>
+
+    <div class="navbar">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'rag_chat' %}">RAG</a>
+      <a href="{% url 'publication' %}">Publication</a>
+    </div>
+
+    <div class="container">
+      <h2>Predicted Disease</h2>
+      <p>{{ disease }}</p>
+
+      {% if explanation %}
+      <hr />
+      <h3>Why this prediction?</h3>
+      <ul class="lime-list">
+        {% for feature, weight in explanation %}
+        <li>
+          <span>{{ feature }}</span>
+          {% if weight > 0 %}
+          <span style="color: #6bff95">+{{ weight|floatformat:3 }}</span>
+          {% else %}
+          <span style="color: #ff7b7b">{{ weight|floatformat:3 }}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% if lime_html %}
+      <hr />
+      <h3>Model Explanation (Visual)</h3>
+      <div class="lime-visual">{{ lime_html|safe }}</div>
+      {% endif %}
+
+      <a href="{% url 'symptom_check' %}" class="btn">Try Again</a>
+    </div>
+  </body>
+</html>

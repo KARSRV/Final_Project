@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Livestock Prognosis</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(
+          to bottom right,
+          black,
+          rgb(40, 0, 70),
+          black
+        );
+        font-family: "Poppins", sans-serif;
+        color: rgb(210, 185, 255);
+        overflow-x: hidden;
+      }
+
+      .purple-blur {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .purple-blur::before {
+        content: "";
+        position: absolute;
+        left: -30%;
+        top: 25%;
+        width: 180%;
+        height: 45%;
+        background: linear-gradient(
+          to right,
+          rgba(168, 85, 247, 0.55),
+          rgba(216, 180, 254, 0.25)
+        );
+        transform: rotate(-20deg);
+        filter: blur(130px);
+        opacity: 0.55;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(18px);
+        display: flex;
+        gap: 25px;
+        z-index: 1000;
+      }
+
+      .navbar a {
+        color: rgb(230, 200, 255);
+        text-decoration: none;
+      }
+
+      .page {
+        padding-top: 8rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 750px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(120, 0, 255, 0.35);
+        border-radius: 20px;
+        padding: 40px;
+        backdrop-filter: blur(18px);
+        box-shadow: 0 0 40px rgba(120, 0, 255, 0.3);
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      h1 {
+        font-size: 2.6rem;
+        font-weight: 700;
+        color: rgb(230, 200, 255);
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        font-size: 1.15rem;
+        line-height: 1.8rem;
+        color: rgba(240, 220, 255, 0.9);
+        margin-bottom: 1.5rem;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+      }
+
+      ul li {
+        background: rgba(100, 0, 150, 0.35);
+        border: 1px solid rgba(120, 0, 255, 0.35);
+        padding: 12px 18px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        color: rgb(230, 200, 255);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="purple-blur"></div>
+
+    <div class="navbar">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'rag_chat' %}">RAG</a>
+      <a href="{% url 'publication' %}">Publication</a>
+    </div>
+
+    <div class="page">
+      <div class="card">
+        <h1>About Livestock Prognosis</h1>
+
+        <p>
+          Livestock Prognosis is an intelligent health assessment system
+          designed to help farmers identify diseases early and improve overall
+          herd welfare. Using a combination of advanced machine learning models
+          and a structured symptom analysis workflow, the platform delivers
+          reliable, real-time insights for livestock health monitoring.
+        </p>
+
+        <p>
+          The system integrates three powerful classifiers to analyze symptoms
+          and predict the most probable disease outcomes:
+        </p>
+
+        <ul>
+          <li>CatBoost Classifier for handling complex non-linear patterns</li>
+          <li>
+            Random Forest Classifier for stable and interpretable predictions
+          </li>
+          <li>
+            XGBoost Classifier for high-performance gradient boosting accuracy
+          </li>
+        </ul>
+
+        <p>
+          Along with predictive modeling, Livestock Prognosis is built using the
+          Django framework to ensure a secure, fast and scalable backend
+          architecture. The platform also features a Retrieval-Augmented
+          Generation module, powered by OpenAI, enabling users to query a
+          knowledge base and receive context-aware explanations and expert-level
+          livestock guidance.
+        </p>
+
+        <p>
+          Together, these components create a robust, AI-driven decision support
+          system aimed at empowering veterinarians, farmers, and livestock
+          caretakers with instant disease insights and intelligent
+          recommendations.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

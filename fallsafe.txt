@@ -1,0 +1,31 @@
+def predict_disease(symptom_dict):
+    import pandas as pd
+
+    # Step 1: Build full input DataFrame with all SYMPTOMS
+    input_row = {feature: 0 for feature in SYMPTOMS}
+    input_row['Age'] = symptom_dict.get('Age', 5)
+    input_row['Temperature'] = symptom_dict.get('Temperature', 37)
+    for symptom in SYMPTOMS:
+        if symptom not in ['Age', 'Temperature']:
+            input_row[symptom] = symptom_dict.get(symptom, 0)
+    input_df = pd.DataFrame([input_row])
+
+    # Step 2: Preprocess only numeric + binary (skip 'Animal' since it wasn't selected)
+    numeric_features = ['Age', 'Temperature']
+    binary_features = [col for col in SYMPTOMS if col not in numeric_features]
+
+    X_top_input = input_df[numeric_features + binary_features]
+
+    # Step 3: Scale numeric features (match training logic)
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    scaler.fit(input_df[numeric_features])  # dummy fit, for consistency
+
+    X_top_input[numeric_features] = scaler.transform(X_top_input[numeric_features])
+
+    # Step 4: Select only the top 20 features (already known from train_model)
+    X_final = X_top_input[top_20].apply(pd.to_numeric, errors='coerce').fillna(0)
+
+    # Step 5: Predict
+    prediction = rf_model.predict(X_final)
+    return dtn[prediction[0]]
